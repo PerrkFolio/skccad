@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Start Page
+{% endblock %}
+
+{% block body %}
+<body>
+    <div class="container">
+        <div class="jumbotron" style="margin-bottom: 0; height: 100vh;">
+            <h1 class="display-4">Crypto Currency Exchange Rates</h1>
+            <p class="lead">This is a simple application for tracking exchange rates on p2p exchanges.</p>
+            <hr class="my-4">
+            <p>You can go to the page with <a href="/p2p">real-time rates</a>, or use the API:</p>
+            <br />
+            <code style="font-size: 125%; padding: 10px; background-color: white; border-radius: 5px;">GET: /p2p/crypto/fiat/volume/good_deals/ (is under development)</code>
+            <br />
+            <ul class="list-group list-group-flush my-5">
+                <li class="list-group-item">{crypto} - the cryptocurrency | type: string</li>
+                <li class="list-group-item">{fiat} - the fiat currency | type: string</li>
+                <li class="list-group-item">{volume} - the amount of <b>cryptocurrency</b> | type: int</li>
+                <li class="list-group-item">{good_deals} - percentage of successful transactions | type: int (<100)</li>
+            </ul>
+            <small>it-admin@sberkassa.swiss</small>
+        </div>
+    </div>
+{% endblock %}

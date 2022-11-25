@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+P2P Rates
+{% endblock %}
+
+{% block body %}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+var $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+var $crypto = "usdt";
+var intervalID = setInterval(update_values,5000);
+
+
+  function update_values() {
+        $.getJSON($SCRIPT_ROOT + '/get_data/'+$crypto,
+
+      function(data) {
+        $('.data_item').detach();
+        data.result.forEach(function(dt){
+          $("#tdata").append("<tr class='data_item'>"+
+          "<td>"+"OKX"+"</td>"+
+          "<td>"+dt.crypto+"</td>"+
+          "<td>"+dt.fiat+"</td>"+
+          "<td>"+dt.sell_price+"</td>"+
+          "<td>"+dt.sell_limit+"</td>"+
+          "<td>"+dt.sell_payments+"</td>"+
+          "<td>"+dt.buy_price+"</td>"+
+          "<td>"+dt.buy_limit+"</td>"+
+          "<td>"+dt.buy_payments+"</td>"
+          +"</tr>"
+          );
+        });
+      });
+
+    };
+
+  $(document).ready(function(){
+    $("button").click(function(){
+      $crypto = this.id;
+      $("button").addClass("d-none");
+      $("#spinner").removeClass("d-none");
+      setTimeout(function(){
+        $("button").removeClass("d-none");
+        $("#spinner").addClass("d-none");
+      }, 5000);
+    });
+  });
+
+</script>
+
+<body onload="update_values();">
+
+  <div class="container-fluid">
+    <div class="btn-toolbar justify-content-between align-items-center" role="toolbar" aria-label="Панель инструментов с группами кнопок">
+      <div class="input-group">
+        <h1 class="display-4">P2P Rates</h1>
+      </div>
+      <div id="select_crypto" class="btn-group" style="height: 25%;" role="group" aria-label="First group">
+        <button id="usdt" type="button" class="btn btn-secondary">USDT</button>
+        <button id="btc" type="button" class="btn btn-secondary">BTC</button>
+        <button id="eth" type="button" class="btn btn-secondary">ETH</button>
+      </div>
+      <div id="spinner" class="spinner-border d-none" role="status">
+        <span class="sr-only">Please, wait...</span>
+      </div>
+    </div>
+    <table class="table table-striped my-4">
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Crypto</th>
+          <th scope="col">Fiat</th>
+          <th scope="col">Price (SELL)</th>
+          <th scope="col">Limit (SELL)</th>
+          <th scope="col">Paymenst (SELL)</th>
+          <th scope="col">Price (BUY)</th>
+          <th scope="col">Limit (BUY)</th>
+          <th scope="col">Paymenst (BUY)</th>
+        </tr>
+      </thead>
+      <tbody id="tdata">
+
+      </tbody>
+    </table>
+  </div>
+<!--  <script>-->
+<!--  document.getElementById("result").innerHTML;-->
+<!--  </script>-->
+
+{% endblock %}
